@@ -6,19 +6,19 @@ import tsConfigPaths from "vite-tsconfig-paths";
 import { existsSync } from "fs";
 import { resolve } from "path";
 
-const SOURCE_LOCATION_PLUGIN_CANDIDATES = [
-  process.env.MEOO_SOURCE_LOCATION_PLUGIN_PATH,
-  "/app/sdk/lib/src/plugins/source-location-babel.js",
-  resolve(process.cwd(), "node_modules/@ali/oneday-agent-sdk/lib/src/plugins/source-location-babel.js"),
-].filter(Boolean) as string[];
+// 你的 GitHub 仓库名称（从你的截图里提取出来的）
+const REPO_NAME = '/jjyu-project/';
+// 声明环境变量，防止直接使用报错
+const SOURCE_LOCATION_PLUGIN_PATH = process.env.SOURCE_LOCATION_PLUGIN_PATH;
 
-const SOURCE_LOCATION_PLUGIN_PATH = SOURCE_LOCATION_PLUGIN_CANDIDATES.find((path) => existsSync(path));
-
+// https://vitejs.dev/config/
 export default defineConfig({
-  base: '/你的仓库名/',  // ← 部署到 GitHub 时改成你的仓库名
+  // ✅ 核心修改：本地开发用 /，打包上传到 GitHub Pages 时，自动变成 /jjyu-project/
+  base: process.env.NODE_ENV === 'production' ? REPO_NAME : '/',
   plugins: [
     tailwindcss(),
     TanStackRouterVite(),
+    tsConfigPaths(),
     viteReact({
       babel: {
         plugins: SOURCE_LOCATION_PLUGIN_PATH
@@ -26,25 +26,5 @@ export default defineConfig({
           : [],
       },
     }),
-    tsConfigPaths(),
   ],
-  server: {
-    host: "0.0.0.0",
-    port: 3015,
-    strictPort: true,
-    allowedHosts: true,
-    hmr: false,
-  },
-  build: {
-    outDir: "dist",
-    assetsDir: "assets",
-    emptyOutDir: true,
-    rollupOptions: {
-      output: {
-        entryFileNames: "assets/[name]-[hash].js",
-        chunkFileNames: "assets/[name]-[hash].js",
-        assetFileNames: "assets/[name]-[hash][extname]",
-      },
-    },
-  },
 });
