@@ -1,7 +1,10 @@
+// src/components/WeiboSection.tsx
+
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
-import { defaultPosts } from "../../data/weiboData";
+// 重点：我把 @ 改成了相对路径 ../ 
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import { defaultPosts, WeiboPost } from "../data/weiboData";
 
 const COLORS = {
   bg: "#fff5f8",
@@ -16,7 +19,6 @@ const COLORS = {
 };
 
 type ArtistType = "zhangji" | "zeyu" | "duo";
-
 
 
 // ============ 图片灯箱组件（只用于微博图集） ============
@@ -179,7 +181,7 @@ function MonthModal({
                     <div className="text-sm font-medium text-gray-400 mb-2">{day}日</div>
                     <div className="space-y-4">
                       {group.posts.map((post) => {
-                        // 根据 artist 取颜色，但不再显示人名
+                        // 根据 artist 取颜色
                         const artistColor = (() => {
                           switch (post.artist) {
                             case "zhangji": return COLORS.zhangJiAccent;
