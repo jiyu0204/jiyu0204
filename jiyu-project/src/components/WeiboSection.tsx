@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { defaultPosts } from '@/data/weiboData';
+import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { defaultPosts } from "../../data/weiboData";
 
 const COLORS = {
   bg: "#fff5f8",
